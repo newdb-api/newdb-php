@@ -1,0 +1,35 @@
+{
+    "name": "newdb/sdk",
+    "description": "Official PHP SDK for NewDB REST API (Verification of Individuals, Legal Entities, Passports, FNS, FSSP, Bankruptcy, Courts in Russia/CIS)",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "NewDB Team",
+            "email": "access@newdb.net",
+            "homepage": "https://newdb.net"
+        }
+    ],
+    "require": {
+        "php": ">=8.1",
+        "ext-json": "*",
+        "ext-curl": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "NewDB\\": "src/"
+        }
+    },
+    "keywords": [
+        "newdb",
+        "kyc",
+        "compliance",
+        "fns",
+        "fssp",
+        "egrul",
+        "counterparty-verification",
+        "passport-check",
+        "scoring",
+        "rest-api"
+    ]
+}
