@@ -159,6 +159,15 @@ class Client
         ], $extra));
     }
 
+    public function monitorKadCase(string $caseNumber, array $extra = []): array
+    {
+        return $this->execute(array_merge([
+            'method' => 'kad_event_monitor',
+            'country' => 'ru',
+            'case_number' => $caseNumber,
+        ], $extra));
+    }
+
     // --- Internal HTTP transport ---
 
     private function sendRequest(string $method, string $path, ?array $body = null): array

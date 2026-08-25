@@ -54,6 +54,7 @@ print_r($completedTask['results']);
 * `checkEgrul($inn)` — сведения ЕГРЮЛ / Прозрачный бизнес
 * `checkFnsBlock($inn, $bik = null)` — блокировки банковских счетов ФНС
 * `complexCompanyCheck($inn)` — комплексная проверка компании
+* `monitorKadCase($caseNumber)` — процессуальный мониторинг конкретного дела КАД
 
 ---
 
