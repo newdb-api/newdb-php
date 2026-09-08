@@ -45,6 +45,26 @@ print_r($completedTask['results']);
 
 ---
 
+### Тестовый режим (Sandbox / Test Mode)
+
+Для тестирования и локальной отладки интеграции без списания баланса используйте параметр `testMode: true`:
+
+```php
+use NewDB\Client;
+
+// Активация тестового контура https://api.newdb.net/test/v2
+$client = new Client(testMode: true);
+
+// Либо через переменную окружения:
+// putenv('NEWDB_TEST_MODE=1');
+// $client = new Client();
+
+$res = $client->checkPassportMvd('4510', '123456', 'Иван', 'Иванов');
+print_r($res);
+```
+
+---
+
 ## Поддерживаемые методы
 
 * `checkPassportMvd($seria, $number, $firstname, $lastname)` — проверка действительности паспорта (МВД)

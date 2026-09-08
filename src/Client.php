@@ -8,17 +8,31 @@ use NewDB\Exceptions\APIResponseException;
 
 class Client
 {
+    public const DEFAULT_BASE_URL = 'https://api.newdb.net/v2';
+    public const TEST_BASE_URL = 'https://api.newdb.net/test/v2';
+    public const DEFAULT_TEST_TOKEN = 'test_token_newdb_sandbox';
+
     private string $apiKey;
     private string $baseUrl;
     private int $timeoutSeconds;
+    private bool $testMode;
 
-    public function __construct(string $apiKey, string $baseUrl = 'https://api.newdb.net/v2', int $timeoutSeconds = 60)
+    public function __construct(?string $apiKey = null, ?string $baseUrl = null, int $timeoutSeconds = 60, bool $testMode = false)
     {
-        $this->apiKey = trim($apiKey);
-        if (empty($this->apiKey)) {
+        $envTest = in_array(strtolower((string) getenv('NEWDB_TEST_MODE')), ['1', 'true', 'yes'], true);
+        $this->testMode = $testMode || $envTest;
+
+        $envKey = getenv('NEWDB_API_KEY') ?: null;
+        $resolvedKey = trim((string) ($apiKey ?? $envKey ?? ($this->testMode ? self::DEFAULT_TEST_TOKEN : '')));
+
+        if (empty($resolvedKey)) {
             throw new AuthenticationException('API key (token) is required.');
         }
-        $this->baseUrl = rtrim($baseUrl, '/');
+        $this->apiKey = $resolvedKey;
+
+        $envBaseUrl = getenv('NEWDB_BASE_URL') ?: null;
+        $defaultUrl = $this->testMode ? self::TEST_BASE_URL : ($envBaseUrl ?: self::DEFAULT_BASE_URL);
+        $this->baseUrl = rtrim((string) ($baseUrl ?? $defaultUrl), '/');
         $this->timeoutSeconds = $timeoutSeconds;
     }
 
