@@ -45,6 +45,26 @@ class Client
         return $response;
     }
 
+    /** Download an HTML or PDF report for one completed request. */
+    public function generateReport(string $requestId, string $format = 'html', ?string $reportType = null): string
+    {
+        $query = ['requestId' => $requestId, 'format' => $format];
+        if ($reportType !== null) {
+            $query['report_type'] = $reportType;
+        }
+        return $this->sendRawRequest('GET', '/report?' . http_build_query($query));
+    }
+
+    /** Download an aggregated HTML or PDF report. */
+    public function generateAggregatedReport(array $requestIds, string $reportType, string $format = 'html'): string
+    {
+        return $this->sendRawRequest('POST', '/report', [
+            'requestIds' => $requestIds,
+            'report_type' => $reportType,
+            'format' => $format,
+        ]);
+    }
+
     /**
      * Execute arbitrary NewDB method.
      */
@@ -164,6 +184,15 @@ class Client
         return $this->execute($params);
     }
 
+    public function checkBo(string $inn, array $extra = []): array
+    {
+        return $this->execute(array_merge([
+            'method' => 'fns_bo',
+            'country' => 'ru',
+            'inn' => $inn,
+        ], $extra));
+    }
+
     public function complexCompanyCheck(string $inn, array $extra = []): array
     {
         return $this->execute(array_merge([
@@ -229,6 +258,35 @@ class Client
         }
 
         return $data;
+    }
+
+    private function sendRawRequest(string $method, string $path, ?array $body = null): string
+    {
+        $ch = curl_init($this->baseUrl . $path);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, $this->timeoutSeconds);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'X-API-KEY: ' . $this->apiKey,
+            'Content-Type: application/json',
+        ]);
+        if ($method === 'POST') {
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($body, JSON_UNESCAPED_UNICODE));
+        }
+        $response = curl_exec($ch);
+        $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $curlError = curl_error($ch);
+        curl_close($ch);
+        if ($response === false) {
+            throw new APIResponseException("cURL error: {$curlError}", 0);
+        }
+        if ($statusCode === 401 || $statusCode === 403) {
+            throw new AuthenticationException('Invalid X-API-KEY token.');
+        }
+        if ($statusCode !== 200) {
+            throw new APIResponseException($response, $statusCode);
+        }
+        return $response;
     }
 
     private function generateUuid(): string
