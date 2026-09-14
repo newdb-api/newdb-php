@@ -74,6 +74,15 @@ print_r($res);
 * `checkEgrul($inn)` — сведения ЕГРЮЛ / Прозрачный бизнес
 * `checkFnsBlock($inn, $bik = null)` — блокировки банковских счетов ФНС
 * `complexCompanyCheck($inn)` — комплексная проверка компании
+
+### HTML/PDF-отчеты
+
+```php
+$pdf = $client->generateReport($requestId, 'pdf');
+$foreignHtml = $client->generateAggregatedReport($requestIds, 'complex_foreign', 'html');
+```
+
+Методы возвращают строку с бинарным содержимым готового файла.
 * `monitorKadCase($caseNumber)` — процессуальный мониторинг конкретного дела КАД
 
 ---

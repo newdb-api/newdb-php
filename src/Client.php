@@ -211,6 +211,26 @@ class Client
         ], $extra));
     }
 
+    // --- Helper methods for Property / Vehicles ---
+
+    public function checkPledgeVin(string $vin, array $extra = []): array
+    {
+        return $this->execute(array_merge([
+            'method' => 'pledge_vin',
+            'country' => 'ru',
+            'vin' => $vin,
+        ], $extra));
+    }
+
+    public function checkVin(string $vin, int $getScreen = 0, array $extra = []): array
+    {
+        return $this->execute(array_merge([
+            'method' => 'vin_check',
+            'vin' => $vin,
+            'get_screen' => $getScreen,
+        ], $extra));
+    }
+
     // --- Internal HTTP transport ---
 
     private function sendRequest(string $method, string $path, ?array $body = null): array
