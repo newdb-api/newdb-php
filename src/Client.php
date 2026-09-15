@@ -231,6 +231,17 @@ class Client
         ], $extra));
     }
 
+    public function checkIntellectualProperty(array $params = []): array
+    {
+        return $this->execute(array_merge([
+            'method' => 'intellectual_property',
+            'search_type' => 'all',
+            'limit' => 10,
+            'offset' => 0,
+            'country' => 'ru',
+        ], $params));
+    }
+
     // --- Internal HTTP transport ---
 
     private function sendRequest(string $method, string $path, ?array $body = null): array
