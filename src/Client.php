@@ -242,6 +242,45 @@ class Client
         ], $params));
     }
 
+    /**
+     * Арбитраж по компаниям физлица: ЕГРЮЛ-связи + агрегация дел КАД со скорингом субсидиарного риска.
+     */
+    public function checkCourtArbitration(string $innfiz, ?int $companyLimit = null, array $extra = []): array
+    {
+        $params = array_merge(['method' => 'court_arbitration', 'innfiz' => $innfiz, 'country' => 'ru'], $extra);
+        if ($companyLimit !== null) {
+            $params['company_limit'] = $companyLimit;
+        }
+        return $this->execute($params);
+    }
+
+    /**
+     * Сумма задолженностей физлица по арбитражным делам КАД (агрегат debt_summary).
+     */
+    public function checkArbitrDebtSum(string $innfiz, ?int $maxCases = null, array $extra = []): array
+    {
+        $params = array_merge(['method' => 'arbitr_debt_sum', 'innfiz' => $innfiz, 'country' => 'ru'], $extra);
+        if ($maxCases !== null) {
+            $params['max_cases'] = $maxCases;
+        }
+        return $this->execute($params);
+    }
+
+    /**
+     * Долги ФССП по связанным компаниям физлица (ЕГРЮЛ-связи + ФССП по компаниям).
+     */
+    public function checkFsspCompany(string $inn, ?int $maxCompanies = null, ?bool $onlyActive = null, array $extra = []): array
+    {
+        $params = array_merge(['method' => 'fssp_company', 'inn' => $inn, 'country' => 'ru'], $extra);
+        if ($maxCompanies !== null) {
+            $params['max_companies'] = $maxCompanies;
+        }
+        if ($onlyActive !== null) {
+            $params['only_active'] = $onlyActive;
+        }
+        return $this->execute($params);
+    }
+
     // --- Internal HTTP transport ---
 
     private function sendRequest(string $method, string $path, ?array $body = null): array
