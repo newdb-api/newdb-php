@@ -122,6 +122,18 @@ class Client
         ], $extra));
     }
 
+    public function checkDriverLicense(string $num, string $lastname, string $firstname, string $birthdate, array $extra = []): array
+    {
+        return $this->execute(array_merge([
+            'method' => 'driver_license',
+            'country' => 'ru',
+            'num' => $num,
+            'lastname' => $lastname,
+            'firstname' => $firstname,
+            'birthdate' => $birthdate,
+        ], $extra));
+    }
+
     public function checkPassportFns(string $seria, string $number, string $firstname, string $lastname, string $dob, array $extra = []): array
     {
         return $this->execute(array_merge([
