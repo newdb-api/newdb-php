@@ -159,6 +159,27 @@ class Client
         ], $extra));
     }
 
+    public function checkDisqualified(string $query, array $extra = []): array
+    {
+        return $this->execute(array_merge([
+            'method' => 'disqualified_person', 'country' => 'ru', 'query' => $query,
+        ], $extra));
+    }
+
+    public function checkFsinWanted(string $fio, array $extra = []): array
+    {
+        return $this->execute(array_merge([
+            'method' => 'fsin_wanted', 'country' => 'ru', 'fio' => $fio, 'get_details' => true,
+        ], $extra));
+    }
+
+    public function checkCorporateRestrictions(array $params): array
+    {
+        return $this->execute(array_merge([
+            'method' => 'corporate_restrictions_person', 'country' => 'ru',
+        ], $params));
+    }
+
     public function complexPassportCheck(string $seria, string $number, string $firstname, string $lastname, array $extra = []): array
     {
         return $this->execute(array_merge([
