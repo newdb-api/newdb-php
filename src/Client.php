@@ -180,6 +180,14 @@ class Client
         ], $params));
     }
 
+    public function checkOpenSanctions(string $query, array $extra = []): array
+    {
+        return $this->execute(array_merge([
+            'method' => 'opensanctions', 'country' => 'ru',
+            'query' => $query, 'max_results' => 25,
+        ], $extra));
+    }
+
     public function complexPassportCheck(string $seria, string $number, string $firstname, string $lastname, array $extra = []): array
     {
         return $this->execute(array_merge([

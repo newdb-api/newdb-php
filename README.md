@@ -71,6 +71,7 @@ print_r($res);
 * `checkPassportFns($seria, $number, $firstname, $lastname, $dob)` — получение ИНН и валидация паспорта (ФНС)
 * `complexPassportCheck($seria, $number, $firstname, $lastname)` — комплексная проверка физлица
 * `checkFssp($firstname, $lastname, $dob, $regioncode = '100')` — долги и исполнительные производства ФССП
+* `checkOpenSanctions($query, $extra = [])` — санкционный и PEP-скрининг с фильтрами `inn`, `birth_date`, `max_results`
 * `checkEgrul($inn)` — сведения ЕГРЮЛ / Прозрачный бизнес
 * `checkFnsBlock($inn, $bik = null)` — блокировки банковских счетов ФНС
 * `complexCompanyCheck($inn)` — комплексная проверка компании
