@@ -252,6 +252,22 @@ class Client
         ], $extra));
     }
 
+    public function checkProverkiKnm(?string $inn = null, ?string $query = null, int $maxPages = 5, array $extra = []): array
+    {
+        $params = array_merge([
+            'method' => 'proverki_knm',
+            'country' => 'ru',
+            'max_pages' => $maxPages,
+        ], $extra);
+        if ($inn !== null) {
+            $params['inn'] = $inn;
+        }
+        if ($query !== null) {
+            $params['query'] = $query;
+        }
+        return $this->execute($params);
+    }
+
     // --- Helper methods for Property / Vehicles ---
 
     public function checkPledgeVin(string $vin, array $extra = []): array
